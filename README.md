@@ -30,3 +30,8 @@ macOS+vscode配合各种插件:
 - Dracula Official: 个人感觉最舒服的主题
 - iocave - Customize UI: 自定义侧边栏字体大小等样式(个人感觉侧边栏字体偏小)
 - iocave - Monkey Path: 配合Customize UI使用
+
+## 编码外观
+
+- 字体 [FiraCode](https://github.com/tonsky/FiraCode)
+- 主题 [Dracula](https://github.com/dracula/dracula-theme)
