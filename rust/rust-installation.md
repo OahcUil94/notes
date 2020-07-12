@@ -27,22 +27,22 @@ programming language, and its package manager, Cargo.
 It will add the cargo, rustc, rustup and other commands to
 Cargo's bin directory, located at:
 
-  /Users/oahcuil/.cargo/bin
+  /Users/mystudy/.cargo/bin
 
 This can be modified with the CARGO_HOME environment variable.
 
 Rustup metadata and toolchains will be installed into the Rustup
 home directory, located at:
 
-  /Users/oahcuil/.rustup
+  /Users/mystudy/.rustup
 
 This can be modified with the RUSTUP_HOME environment variable.
 
 This path will then be added to your PATH environment variable by
 modifying the profile files located at:
 
-  /Users/oahcuil/.profile
-/Users/oahcuil/.zprofile
+  /Users/mystudy/.profile
+/Users/mystudy/.zprofile
 
 You can uninstall at any time with rustup self uninstall and
 these changes will be reverted.
