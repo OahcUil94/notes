@@ -27,6 +27,27 @@ zsh已经安装了大部分常用的主题, 可在`~/.oh-my-zsh/themes`目录下
 
 > 注意: 路径前缀的XX@XX太长, 找到agnoster.zsh-theme文件, 将文本文件里面的build_prompt下的prompt_context字段在前面加#注释掉即可
 
+### 安装powerlevel9k主题
+
+[https://github.com/Powerlevel9k/powerlevel9k](https://github.com/Powerlevel9k/powerlevel9k)
+
+该主题和`agnoster`主题样式类似, 但是可配置项更多:
+
+- 下载主题: `git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k`
+- 配置主题: `ZSH_THEME="powerlevel9k/powerlevel9k"`
+
+定制提示符, 直接在`.zshrc`文件里增加环境变量即可: 
+
+```zsh
+# 注意：DEFAULT_USER 的值必须要是系统用户名才能生效(如何系统用户名和home目录的文件夹名字不一致, 也填写系统用户名)
+DEFAULT_USER="xxxx"
+
+# 设置 oh-my-zsh powerlevel9k 主题左边元素显示
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir dir_writable vcs)
+# 设置 oh-my-zsh powerlevel9k 主题右边元素显示
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status go_version)
+```
+
 ### 安装语法高亮插件
 
 [https://github.com/zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
