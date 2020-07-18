@@ -6,6 +6,10 @@
 
 [https://draculatheme.com/iterm](https://draculatheme.com/iterm)
 
+## 备选主题material design
+
+[https://github.com/MartinSeeler/iterm2-material-design](https://github.com/MartinSeeler/iterm2-material-design)
+
 ## 配置FiraCode字体
 
 - 设置: `iTerm2 > Preferences > Profile > Text > Font > Fira Code, Regular, 14`
@@ -80,3 +84,6 @@ plugins=(
 ## 参考文章
 
 - [https://blog.csdn.net/dianfu2892/article/details/101467017](https://blog.csdn.net/dianfu2892/article/details/101467017)
+
+https://github.com/ryanoasis/nerd-fonts
+
