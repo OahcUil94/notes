@@ -63,11 +63,17 @@ POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
 POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir go_version vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable custom_wifi_signal ram)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir go_version node_version vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
 
 POWERLEVEL9K_GO_VERSION_BACKGROUND='cyan'
 POWERLEVEL9K_GO_VERSION_FOREGROUND='black'
+
+POWERLEVEL9K_NODE_VERSION_BACKGROUND='121'
+POWERLEVEL9K_NODE_VERSION_FOREGROUND='black'
+POWERLEVEL9K_NODE_ICON='\uf898'
+
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
 
 POWERLEVEL9K_TIME_FORMAT="%D{\uf017 %H:%M \uf073 %d/%m/%y}"
 POWERLEVEL9K_TIME_BACKGROUND='white'
@@ -90,3 +96,8 @@ POWERLEVEL9K_TIME_ICON=""
 POWERLEVEL9K_PUBLIC_IP_BACKGROUND="green"
 POWERLEVEL9K_PUBLIC_IP_FOREGROUND="black"
 ```
+
+## 参考资料
+
+- 设置配色, 可设置英文或数字: [https://user-images.githubusercontent.com/704406/43988708-64c0fa52-9d4c-11e8-8cf9-c4d4b97a5200.png](https://user-images.githubusercontent.com/704406/43988708-64c0fa52-9d4c-11e8-8cf9-c4d4b97a5200.png)
+- 设置图标: [https://www.nerdfonts.com/cheat-sheet](https://www.nerdfonts.com/cheat-sheet)
