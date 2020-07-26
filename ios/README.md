@@ -24,3 +24,7 @@ Apple 支持
 
 1. 打开终端输入: `defaults delete MobileMeAccounts`
 
+## 邓白氏编码查询
+
+https://developer.apple.com/enroll/duns-lookup/
+

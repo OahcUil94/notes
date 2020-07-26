@@ -1,5 +1,10 @@
 # golang相关内容
 
+## golang标准库
+
+- expvar: 监控服务运行各项指标和状态的包
+
+
 ## 参考资料
 
 - [Go语言101](https://gfw.go101.org/article/101.html)
