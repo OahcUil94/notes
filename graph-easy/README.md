@@ -70,6 +70,7 @@ index b58f538..6d7d7c7 100644
 3. 合流: graph-easy <<< '[a]->[b]->[c][d]->[e]->[b]'
 4. 流程说明: graph-easy <<< '[a]- say hello ->[b]'
 5. 上下结构: graph-easy <<< 'graph{flow:south;}[上]->[中]->[下]'
+6. 无边框: graph-easy <<< '[Database daily backup] { border: none; } -> [SNS Topic] -> [Email notification] { border: none;  }'
 
 读取文本文件的内容, 执行`graph-easy graph-easy.text`
 
