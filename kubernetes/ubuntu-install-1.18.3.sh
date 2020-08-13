@@ -104,3 +104,5 @@ systemctl start kubelet
 echo '====pull images from aliyun===='
 repo_name="registry.aliyuncs.com/google_containers"
 kubeadm config images pull --image-repository=${repo_name} --kubernetes-version=v1.18.3
+docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#k8s.gcr.io#2" |sh -x
+docker image list

@@ -225,6 +225,9 @@ echo "====pull images from aliyun===="
 repo_name="registry.aliyuncs.com/google_containers"
 # 指定镜像仓库并指定版本
 kubeadm config images pull --image-repository=${repo_name} --kubernetes-version=v1.18.3
+# 将阿里云镜像tag改成k8s.gcr.io
+docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#k8s.gcr.io#2" |sh -x
+docker image list
 ```
 
 - [https://www.cnblogs.com/hongdada/p/11395200.html](https://www.cnblogs.com/hongdada/p/11395200.html)
