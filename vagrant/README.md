@@ -37,6 +37,10 @@ centos8         (virtualbox, 0)
 ubuntu/xenial64 (virtualbox, 0)
 ```
 
+## up
+
+指定虚拟化平台, `vagrant up --provider=virtualbox`
+
 ## ssh
 
 ## halt
@@ -86,3 +90,13 @@ ubuntu/xenial64 (virtualbox, 0)
 ### Public Network: 公有网络
 
 在公网上可以访问到这台机器
+
+## vagrant配置root账号信息
+
+```ruby
+config.ssh.username = 'root'
+config.ssh.password = 'vagrant'
+config.ssh.insert_key = 'true'
+```
+
+- [https://stackoverflow.com/questions/25758737/vagrant-login-as-root-by-default](https://stackoverflow.com/questions/25758737/vagrant-login-as-root-by-default)
