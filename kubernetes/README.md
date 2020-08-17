@@ -48,3 +48,9 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+
+## 生产环境部署
+
+[https://github.com/rootsongjc/kubernetes-vagrant-centos-cluster](https://github.com/rootsongjc/kubernetes-vagrant-centos-cluster)
+
+- [https://www.jianshu.com/p/cb97268267b2](https://www.jianshu.com/p/cb97268267b2)

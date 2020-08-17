@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
+
+  env = "centos7"
+  hosts = ["master", "worker1", "worker2"]
+  hosts.each_index do |i|
+    config.vm.define "#{env}-#{hosts.at(i)}" do |node|
+
+      hostname = "#{hosts.at(i)}"
+      ip = "192.168.33.#{i+101}"
+
+      node.vm.box = "centos/7"
+      node.vm.hostname = hostname
+      node.vm.network "private_network", ip: ip
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = "4096"
+        vb.cpus = 2
+        vb.name = hostname
+      end
+    end
+  end
+end

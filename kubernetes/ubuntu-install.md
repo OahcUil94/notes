@@ -97,6 +97,7 @@ add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/u
 ## 安装docker
 apt-get update
 apt-get -y install docker-ce docker-ce-cli containerd.io
+systemctl start docker
 docker version
 ```
 
@@ -168,7 +169,7 @@ EOF
 # 禁用swap
 swapoff -a
 # 给/etc/fstab这个文件swap相关内容前加注释
-sed -i '/swap/s/^/#/' /etc/fstab
+sed -i '/swap/s/^/#/g' /etc/fstab
 ```
 
 ### 安装kubelet,kubeadm,kubectl前版本确认
