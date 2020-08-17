@@ -112,7 +112,6 @@ br_netfilter参考资料:
 # 配置阿里云的docker源
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-
 # 清理并更新缓存
 yum clean all && yum makecache -y
 
@@ -185,6 +184,13 @@ swapoff -a
 sed -i '/swap/s/^/#/g' /etc/fstab
 ```
 
+### 关闭网络防火墙
+
+```bash
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
 ### 配置kubernetes阿里云yum源
 
 ```bash
@@ -220,6 +226,13 @@ yum install -y kubelet-1.18.3-0 kubeadm-1.18.3-0 kubectl-1.18.3-0
 # 阻止包自动升级
 yum -y install yum-versionlock
 yum versionlock add kubelet kubeadm kubectl
+
+# 设置开机自启动kubelet, 现在不用启动, 等一切配置都就绪再启动
+systemctl enable kubelet
+# 查看日志, 发现kubelet在报错, 不要介意
+# journalctl -f
+# 查看kubelet安装都生成了哪些文件
+rpm -ql kubelet
 ```
 
 ### 下载kubernetes需要的镜像
@@ -237,3 +250,32 @@ docker image list
 ```
 
 - [https://www.cnblogs.com/hongdada/p/11395200.html](https://www.cnblogs.com/hongdada/p/11395200.html)
+
+### kubeadm init
+
+```bash
+# --pod-network-cidr: 指定pod所属网络cidr格式的网络地址
+# --service-cidr: 指定service所属网络
+# --apiserver-advertise-address: 指定apiserver监听的地址
+# --ignore-preflight-errors='Swap': 可以不关闭swap
+kubeadm init --apiserver-advertise-address=$2 --control-plane-endpoint=$2 --pod-network-cidr='10.244.0.0/16' --kubernetes-version=v1.18.3
+```
+
+kubeadm init --pod-network-cidr='10.244.0.0/16' --kubernetes-version='v1.18.3'
+
+### 如果不关闭Swap, 如何进行初始化成功
+
+1. 需要编辑kubelet配置文件: `/etc/sysconfig/kubelet`
+
+```
+KUBELET_EXTRA_ARGS="--fail-swap-on=false"
+```
+
+> 经过实验, 不加也是可以的
+
+2. 执行`kubeadm init`命令的时候, 添加`--ignore-preflight-errors='Swap'`选项
+
+
+## 可能初始化不成功的原因
+
+[https://blog.csdn.net/boling_cavalry/article/details/91306095](https://blog.csdn.net/boling_cavalry/article/details/91306095)
