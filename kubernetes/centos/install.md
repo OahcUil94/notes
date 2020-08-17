@@ -106,18 +106,20 @@ overlay参考资料:
 br_netfilter参考资料:
 - [https://www.howtoing.com/centos-kubernetes-docker-cluster](https://www.howtoing.com/centos-kubernetes-docker-cluster)
 
+官方资料:
+- [https://kubernetes.io/docs/setup/production-environment/container-runtimes/](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
+
 ### 安装docker
 
 ```bash
 # 配置阿里云的docker源
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
 # 清理并更新缓存
 yum clean all && yum makecache -y
 
 # 安装docker相关组件
 yum install -y docker-ce docker-ce-cli containerd.io
-
 ```
 
 ### 配置docker daemon.json文件
@@ -144,10 +146,14 @@ cat > /etc/docker/daemon.json <<EOF
 EOF
 
 systemctl enable --now docker
+
+# 查看是否设置为了systemd
+docker info | grep Cgroup
 ```
 
 native.cgroupdriver=systemd配置原因:
 - [https://blog.whsir.com/post-5312.html](https://blog.whsir.com/post-5312.html)
+- [https://kubernetes.io/docs/setup/production-environment/container-runtimes/](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
 
 ### 添加vagrant用户到docker用户组
 
@@ -258,7 +264,7 @@ docker image list
 # --service-cidr: 指定service所属网络
 # --apiserver-advertise-address: 指定apiserver监听的地址
 # --ignore-preflight-errors='Swap': 可以不关闭swap
-kubeadm init --apiserver-advertise-address=$2 --control-plane-endpoint=$2 --pod-network-cidr='10.244.0.0/16' --kubernetes-version=v1.18.3
+kubeadm init --apiserver-advertise-address='0.0.0.0' --pod-network-cidr='10.244.0.0/16' --kubernetes-version='v1.18.3'
 ```
 
 kubeadm init --pod-network-cidr='10.244.0.0/16' --kubernetes-version='v1.18.3'
@@ -275,7 +281,14 @@ KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 
 2. 执行`kubeadm init`命令的时候, 添加`--ignore-preflight-errors='Swap'`选项
 
+## 初始化成功之后检验
+
+- ss -tnl
+- kubectl get cs
+- 
+
 
 ## 可能初始化不成功的原因
 
-[https://blog.csdn.net/boling_cavalry/article/details/91306095](https://blog.csdn.net/boling_cavalry/article/details/91306095)
+- [https://blog.csdn.net/boling_cavalry/article/details/91306095](https://blog.csdn.net/boling_cavalry/article/details/91306095)
+- [https://www.jianshu.com/p/745c96476a32](https://www.jianshu.com/p/745c96476a32)
