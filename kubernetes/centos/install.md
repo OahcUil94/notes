@@ -125,7 +125,9 @@ yum install -y docker-ce docker-ce-cli containerd.io
 ### 配置docker daemon.json文件
 
 ```bash
-# 配置docker daemon.json文件
+# 先启动docker, 启动docker会自动在/etc目录下创建docker目录
+systemctl start docker
+# 没有docker目录不会自动创建, 配置docker daemon.json文件
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -144,8 +146,9 @@ cat > /etc/docker/daemon.json <<EOF
   ]
 }
 EOF
-
-systemctl enable --now docker
+systemctl daemon-reload
+systemctl restart docker
+systemctl enable docker
 
 # 查看是否设置为了systemd
 docker info | grep Cgroup
@@ -285,8 +288,6 @@ KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 
 - ss -tnl
 - kubectl get cs
-- 
-
 
 ## 可能初始化不成功的原因
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#### 以下步骤是初始化centos7配置, 并且安装kubeadm,kubectl,kubelet以及k8s启动需要的镜像 ####
+
 echo '====set timezone===='
 timedatectl set-timezone Asia/Shanghai
 
@@ -56,6 +58,7 @@ echo '==== install docker===='
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 yum clean all && yum makecache -y
 yum install -y docker-ce docker-ce-cli containerd.io
+systemctl start docker
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -74,7 +77,9 @@ cat > /etc/docker/daemon.json <<EOF
   ]
 }
 EOF
-systemctl enable --now docker
+systemctl daemon-reload
+systemctl restart docker
+systemctl enable docker
 
 echo '====add vagrant user to docker group===='
 egrep "^docker" /etc/group >& /dev/null
