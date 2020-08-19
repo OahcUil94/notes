@@ -4,12 +4,13 @@
 
 echo '====set timezone===='
 timedatectl set-timezone Asia/Shanghai
+timedatectl set-local-rtc 0
 
 echo '====config hosts===='
 cat >> /etc/hosts <<EOF
-192.168.34.101 master
-192.168.34.102 worker1
-192.168.34.103 worker2
+192.168.33.101 master
+192.168.33.102 worker1
+192.168.33.103 worker2
 EOF
 
 echo '====set aliyun yum repo===='
@@ -33,6 +34,26 @@ nameserver 180.76.76.76
 EOF
 
 systemctl restart NetworkManager.service
+
+echo '====close not need service===='
+systemctl stop postfix && systemctl disable postfix
+
+echo '====set only journald log===='
+mkdir /var/log/journal
+mkdir /etc/systemd/journald.conf.d
+cat > /etc/systemd/journald.conf.d/99-prophet.conf <<EOF
+[Journal]
+Storage=persistent
+Compress=yes
+SyncIntervalSec=5m
+RateLimitInterval=30s
+RateLimitBurst=1000
+SystemMaxUse=10G
+SystemMaxFileSize=200M
+MaxRetentionSec=2week
+ForwardToSyslog=no
+EOF
+systemctl restart systemd-journald
 
 echo '====load overlay, br_netfilter module===='
 cat > /etc/modules-load.d/containerd.conf <<EOF
@@ -121,3 +142,22 @@ echo "====pull images from aliyun===="
 repo_name="registry.aliyuncs.com/google_containers"
 kubeadm config images pull --image-repository=${repo_name} --kubernetes-version=v1.18.3
 docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#k8s.gcr.io#2" |sh -x
+
+if [[ $1 -eq 0 ]]
+then
+  echo "====configure master node===="
+  kubeadm init --apiserver-advertise-address=$2 --control-plane-endpoint=$2 --pod-network-cidr='10.244.0.0/16'
+  mkdir -p $HOME/.kube
+  cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  chown $(id -u):$(id -g) $HOME/.kube/config
+fi
+
+if [[ $1 -eq 1 ]]
+then
+	echo "configure node2"
+fi
+
+if [[ $1 -eq 2 ]]
+then
+	echo "configure node3"
+fi

@@ -1,0 +1,55 @@
+# kubeadm init之后的事情
+
+kubeadm config print init-defaults > kubeadm-config.yaml
+
+```yaml
+apiVersion: kubeadm.k8s.io/v1beta2
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.34.101
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  name: worker1
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta2
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns:
+  type: CoreDNS
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: k8s.gcr.io
+kind: ClusterConfiguration
+kubernetesVersion: v1.18.3
+networking:
+  dnsDomain: cluster.local
+  podSubnet: 10.244.0.0/16
+  serviceSubnet: 10.96.0.0/12
+scheduler: {}
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+featureGates:
+  SupportIPVSProxyMode: true
+mode: ipvs
+```
+
+kubeadm init --config=kubeadm-config.yaml | tee kubeadm-init.log
+
+> [https://blog.csdn.net/woshizhangliang999/article/details/107675543](https://blog.csdn.net/woshizhangliang999/article/details/107675543)
