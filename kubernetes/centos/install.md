@@ -399,3 +399,5 @@ Then you can join any number of worker nodes by running the following on each as
 
 kubeadm join 192.168.34.103:6443 --token 62y81o.5hochdto8cr2y8ik \
     --discovery-token-ca-cert-hash sha256:476f6535fa1d53f81fd1a4d376e48e0ad3cc870dfa0cd77b57b12e12ea07d506
+
+问题1: kubelet什么时候去启动它，不需要人为启动, 在执行kubeadm join的时候会自动启动

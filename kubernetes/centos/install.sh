@@ -150,14 +150,21 @@ then
   mkdir -p $HOME/.kube
   cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   chown $(id -u):$(id -g) $HOME/.kube/config
+
+  echo "====install flannel===="
+  wget https://cdn.jsdelivr.net/gh/coreos/flannel@0.12.0/Documentation/kube-flannel.yml
+  repo_name="quay.mirrors.ustc.edu.cn"
+  docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#quay.io#2" |sh -x
+  kubectl create -f kube-flannel.yml
+  kubectl get pod -n kube-system
 fi
 
 if [[ $1 -eq 1 ]]
 then
-	echo "configure node2"
+	echo "configure node2, need join master"
 fi
 
 if [[ $1 -eq 2 ]]
 then
-	echo "configure node3"
+	echo "configure node3, need join master"
 fi
