@@ -96,3 +96,8 @@ docker pull quay.mirrors.ustc.edu.cn/coreos/flannel:v0.12.0-amd64
 
 repo_name="quay.mirrors.ustc.edu.cn"
 docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#quay.io#2" |sh -x
+
+kubectl config view
+scp admin.conf node01:/root/.kube/config
+
+kubectl是靠.kube目录下的默认是config文件来加载该联系哪个集群，并向集群提供认证信息的

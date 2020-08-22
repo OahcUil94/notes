@@ -146,7 +146,7 @@ docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}
 if [[ $1 -eq 0 ]]
 then
   echo "====configure master node===="
-  kubeadm init --apiserver-advertise-address=$2 --control-plane-endpoint=$2 --pod-network-cidr='10.244.0.0/16'
+  kubeadm init --apiserver-advertise-address=$2 --control-plane-endpoint=$2 --pod-network-cidr='10.244.0.0/16' --kubernetes-version='v1.18.3'
   mkdir -p $HOME/.kube
   cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   chown $(id -u):$(id -g) $HOME/.kube/config
