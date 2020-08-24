@@ -63,6 +63,21 @@ EOF
 modprobe overlay
 modprobe br_netfilter
 
+echo '==== yum update and install common package===='
+yum update -y
+yum install -y vim net-tools telnet bind-utils wget yum-utils device-mapper-persistent-data lvm2
+
+echo '==== clear iptable rules ===='
+yum install -y iptables-services
+systemctl start iptables
+systemctl enable iptables
+iptables -F
+service iptables save
+
+echo '====disable firewalld===='
+systemctl stop firewalld
+systemctl disable firewalld
+
 echo '====config system k8s network params===='
 cat > /etc/sysctl.d/99-kubernetes-cri.conf <<EOF
 net.bridge.bridge-nf-call-iptables = 1
@@ -70,10 +85,6 @@ net.ipv4.ip_forward = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 sysctl --system
-
-echo '==== yum update and install common package===='
-yum update -y
-yum install -y vim net-tools telnet bind-utils wget yum-utils device-mapper-persistent-data lvm2
 
 echo '==== install docker===='
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
@@ -117,10 +128,6 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 echo '====disable swap===='
 swapoff -a
 sed -i '/swap/s/^/#/g' /etc/fstab
-
-echo '====disable firewalld===='
-systemctl stop firewalld
-systemctl disable firewalld
 
 echo '====install kubeadm,kubectl,kubelet===='
 cat > /etc/yum.repos.d/kubernetes.repo << EOF
