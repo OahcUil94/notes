@@ -1,5 +1,7 @@
 # kubernetes
 
+- [kubectl](./kubectl/README.md)
+
 ## containerd
 
 - [https://zhuanlan.zhihu.com/p/88993632](https://zhuanlan.zhihu.com/p/88993632)
