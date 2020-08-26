@@ -21,10 +21,14 @@ Vagrant.configure("2") do |config|
         vb.cpus = 2
         vb.name = hostname
       end
-      node.vm.provision "shell", inline: <<-SHELL
-        sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    
-        systemctl restart sshd.service
-      SHELL
+      # node.vm.provision "shell", inline: <<-SHELL
+      #   sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    
+      #   systemctl restart sshd.service
+      #   rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+      #   yum install -y https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
+      #   yum install -y kernel-lt-4.4.233-1.el7.elrepo --enablerepo=elrepo-kernel
+      #   grub2-set-default "CentOS Linux (4.4.233-1.el7.elrepo.x86_64) 7 (Core)"
+      # SHELL
       node.vm.provision "shell", path: "install.sh", args: [i, ip, hostname]
     end
   end

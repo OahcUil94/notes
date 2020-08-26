@@ -10,3 +10,8 @@
 ## 说明
 
 kubectl是靠.kube目录下的默认是config文件来加载该联系哪个集群，并向集群提供认证信息的
+
+echo "====install flannel===="
+wget https://cdn.jsdelivr.net/gh/coreos/flannel@0.12.0/Documentation/kube-flannel.yml
+kubectl create -f kube-flannel.yml
+kubectl get pod -n kube-system

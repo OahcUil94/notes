@@ -67,17 +67,6 @@ echo '==== yum update and install common package===='
 yum update -y
 yum install -y vim net-tools telnet bind-utils wget yum-utils device-mapper-persistent-data lvm2
 
-echo '==== clear iptable rules ===='
-yum install -y iptables-services
-systemctl start iptables
-systemctl enable iptables
-iptables -F
-service iptables save
-
-echo '====disable firewalld===='
-systemctl stop firewalld
-systemctl disable firewalld
-
 echo '====config system k8s network params===='
 cat > /etc/sysctl.d/99-kubernetes-cri.conf <<EOF
 net.bridge.bridge-nf-call-iptables = 1
@@ -129,6 +118,25 @@ echo '====disable swap===='
 swapoff -a
 sed -i '/swap/s/^/#/g' /etc/fstab
 
+echo '====disable firewalld===='
+systemctl stop firewalld
+systemctl disable firewalld
+
+echo '====clear iptable rules===='
+yum install -y iptables-services
+systemctl start iptables
+systemctl enable iptables
+service iptables save
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+
+mkdir /etc/systemd/system/docker.service.d
+echo "ExecStartPost=/sbin/iptables -P FORWARD ACCEPT" >> /etc/systemd/system/docker.service.d/docker.conf
+systemctl daemon-reload
+systemctl restart docker
+
 echo '====install kubeadm,kubectl,kubelet===='
 cat > /etc/yum.repos.d/kubernetes.repo << EOF
 [kubernetes]
@@ -150,6 +158,11 @@ repo_name="registry.aliyuncs.com/google_containers"
 kubeadm config images pull --image-repository=${repo_name} --kubernetes-version=v1.18.3
 docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#k8s.gcr.io#2" |sh -x
 
+echo "====pull flannel image===="
+repo_name="quay.mirrors.ustc.edu.cn"
+docker pull ${repo_name}/coreos/flannel:v0.12.0-amd64
+docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#quay.io#2" |sh -x
+
 if [[ $1 -eq 0 ]]
 then
   echo "====configure master node===="
@@ -157,13 +170,6 @@ then
   mkdir -p $HOME/.kube
   cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   chown $(id -u):$(id -g) $HOME/.kube/config
-
-  echo "====install flannel===="
-  wget https://cdn.jsdelivr.net/gh/coreos/flannel@0.12.0/Documentation/kube-flannel.yml
-  repo_name="quay.mirrors.ustc.edu.cn"
-  docker image list |grep ${repo_name} |awk '{print "docker tag ",$1":"$2,$1":"$2}' |sed -e "s#${repo_name}#quay.io#2" |sh -x
-  kubectl create -f kube-flannel.yml
-  kubectl get pod -n kube-system
 fi
 
 if [[ $1 -eq 1 ]]

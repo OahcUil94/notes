@@ -133,5 +133,37 @@ kubectl rollout undo deployment whoami
 yum install -y iptables-services
 systemctl start iptables
 systemctl enable iptables
+
 iptables -F
 service iptables save
+
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
+iptables -L -n
+
+https://www.cnblogs.com/AmbitiousMice/p/8486049.html
+
+kubectl exec -it etcd-master -c etcd -n kube-system -- /bin/sh
+
+https://my.oschina.net/u/4275236/blog/3354231
+
+https://www.cnblogs.com/orchidzjl/p/11148753.html
+
+https://blog.csdn.net/weixin_30566111/article/details/101642078
+
+etcdctl --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key get /registry/configmaps/kube-system/kube-flannel-cfg
+
+yum install -y iptables-services
+systemctl start iptables
+
+systemctl enable iptables
+service iptables save
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -F
