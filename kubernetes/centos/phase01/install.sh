@@ -127,9 +127,6 @@ yum install -y iptables-services
 systemctl start iptables
 systemctl enable iptables
 service iptables save
-iptables -P INPUT ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -P FORWARD ACCEPT
 iptables -F
 
 mkdir /etc/systemd/system/docker.service.d
