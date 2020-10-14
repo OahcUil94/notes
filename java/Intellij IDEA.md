@@ -23,3 +23,7 @@
 4. `rm -rf ~/Library/Caches/JetBrains/IntelliJIdea2020.2`
 5. `rm -rf ~/.idea`
 6. `rm ~/Library/Preferences/jetbrains.idea.d7ab3053.plist`
+
+## 下载
+
+链接:https://pan.baidu.com/s/1Ub0FpO9TYqYpSsUiJP46ww  密码:0u88
