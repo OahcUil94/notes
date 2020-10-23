@@ -35,3 +35,10 @@ macOS+vscode配合各种插件:
 
 - 字体 [FiraCode](https://github.com/tonsky/FiraCode)
 - 主题 [Dracula](https://github.com/dracula/dracula-theme)
+
+## 目录说明
+
+- 笔记工具
+  - typora
+- 热键工具
+  - autohotkey
