@@ -100,3 +100,28 @@ config.ssh.insert_key = 'true'
 ```
 
 - [https://stackoverflow.com/questions/25758737/vagrant-login-as-root-by-default](https://stackoverflow.com/questions/25758737/vagrant-login-as-root-by-default)
+
+## vagrant使用virtualbox虚拟机设置共享目录报错
+
+挂载命令是: `config.vm.synced_folder ".", "/vagrant", type: "nfs"`
+
+然后执行`vagrant reload`, 出现了如下的报错信息:
+
+```bash
+Vagrant was unable to mount VirtualBox shared folders. This is usually
+because the filesystem "vboxsf" is not available. This filesystem is
+made available via the VirtualBox Guest Additions and kernel module.
+Please verify that these guest additions are properly installed in the
+guest. This is not a bug in Vagrant and is usually caused by a faulty
+Vagrant box. For context, the command attempted was:
+
+mount -t vboxsf -o uid=1000,gid=1000 vagrant /vagrant
+
+The error output from the command was:
+
+mount: unknown filesystem type 'vboxsf'
+```
+
+需要安装插件: `vagrant plugin install vagrant-vbguest`
+
+`vagrant plugin install vagrant-vbguest --plugin-clean-sources --plugin-source https://gems.ruby-china.com/`
