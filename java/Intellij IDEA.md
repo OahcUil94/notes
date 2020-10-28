@@ -15,6 +15,12 @@
 
 安装参数: `LFq51qqupnaiTNn39w6zATiOTxZI2JYuRJEBlzmUDv4zeeNlXhMgJZVb0q5QkLr+CIUrSuNB7ucifrGXawLB4qswPOXYG7+ItDNUR/9UkLTUWlnHLX07hnR1USOrWIjTmbytcIKEdaI6x0RskyotuItj84xxoSBP/iRBW2EHpOc`
 
+
+
+2020.10.27上面激活码已失效: 
+
+`HbVMaxqQrTt4UvDUk8fhyFT7uRdv48bqJsQMwVFp53YH9PZC9l+ZxAgnA60cLwwhURw/e4DcZZtle4tQzur4yWRk35qghES4JLFlmKty/UNiYh6RZyXeCNPTCvIqxT9HR2YKqQT93be6AfLTcbJwPSLO201g+HbMbg6+aK1MUJI`
+
 ## 卸载
 
 1. `rm -rf /Applications/IntelliJ\ IDEA.app`
