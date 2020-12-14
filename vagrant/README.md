@@ -172,3 +172,9 @@ sudo yum -y update kernel
 exit
 vagrant reload --provision
 ```
+
+## 执行脚本时, 默认是root用户, 切换成默认用户vagrant
+
+config.vm.provision "shell", path: "install.sh", privileged: false
+
+指定privileged为false
