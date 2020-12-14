@@ -125,3 +125,50 @@ mount: unknown filesystem type 'vboxsf'
 需要安装插件: `vagrant plugin install vagrant-vbguest`
 
 `vagrant plugin install vagrant-vbguest --plugin-clean-sources --plugin-source https://gems.ruby-china.com/`
+
+## mac进行vagrant up的时候报错
+
+```
+Complete!
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.huaweicloud.com
+ * extras: mirrors.huaweicloud.com
+ * updates: mirrors.bfsu.edu.cn
+No package kernel-devel-3.10.0-1127.el7.x86_64 available.
+Error: Nothing to do
+Unmounting Virtualbox Guest Additions ISO from: /mnt
+umount: /mnt: not mounted
+==> default: Checking for guest additions in VM...
+    default: No guest additions were detected on the base box for this VM! Guest
+    default: additions are required for forwarded ports, shared folders, host only
+    default: networking, and more. If SSH fails on this machine, please install
+    default: the guest additions and repackage the box to continue.
+    default:
+    default: This is not an error message; everything may continue to work properly,
+    default: in which case you may ignore this message.
+The following SSH command responded with a non-zero exit status.
+Vagrant assumes that this means the command failed!
+
+umount /mnt
+
+Stdout from the command:
+
+
+
+Stderr from the command:
+
+umount: /mnt: not mounted
+```
+
+关键问题是这里: `No package kernel-devel-3.10.0-1127.el7.x86_64 available.`
+
+解决办法: 
+
+```
+vagrant up ... until it fails as above
+vagrant ssh
+sudo yum -y update kernel
+exit
+vagrant reload --provision
+```
