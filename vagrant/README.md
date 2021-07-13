@@ -187,7 +187,7 @@ config.vm.provision "shell", path: "install.sh", privileged: false
 
 配置文件需要加一条: `config.vbguest.auto_update = false`
 
-`vagrant up`之后, 进行`vagrant vbguest`即可
+`vagrant up`之后, 进行`vagrant vbguest`即可, 注意如果挂载了目录的话是无法生效的, 需要重启一下`vagrant reload`
 
 2. 在vbguest更新之前, 就设置好镜像源, 可以在Vagrantfile里进行自定义安装器:
 
