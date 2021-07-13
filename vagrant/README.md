@@ -178,3 +178,107 @@ vagrant reload --provision
 config.vm.provision "shell", path: "install.sh", privileged: false
 
 指定privileged为false
+
+## VBox Guest Additions
+
+默认vbguest插件会自动监测VBoxGuestAdditions版本, 并进行相关依赖包的更新下载, 但是由于没有走镜像源, 所以会很慢, 有两种方式解决:
+
+1. vm启动的时候, 先不要进行下载更新, 等vm启动完毕后, 设置好了镜像源之后, 再进行更新
+
+配置文件需要加一条: `config.vbguest.auto_update = false`
+
+`vagrant up`之后, 进行`vagrant vbguest`即可
+
+2. 在vbguest更新之前, 就设置好镜像源, 可以在Vagrantfile里进行自定义安装器:
+
+```ruby
+class VbguestCustom < VagrantVbguest::Installers::Ubuntu
+
+  def install(opts=nil, &block)
+    cmd = <<~SCRIPT
+        cp /etc/apt/sources.list /etc/apt/sources.list.backup
+        cat > /etc/apt/sources.list <<EOF
+        deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+        deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+        deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+        deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+        deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+        deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+        deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+        deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+        deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+        deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+        EOF
+        apt-get update
+    SCRIPT
+    
+    communicate.sudo(cmd, opts, &block)
+    super
+  end
+end
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/xenial64"
+    config.vm.box_check_update = false
+    config.vbguest.installer = VbguestCustom
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.memory = "4096"
+        vb.cpus = 2
+    end
+    config.vm.provision "shell", path: "provision.sh"
+end
+```
+
+## 如何添加宿主机系统判断
+
+vagrant并没有提供直接判断的方法, 可以进行自定义模块使用
+
+```ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+module OS
+    def OS.windows?
+        (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+    end
+
+    def OS.mac?
+        (/darwin/ =~ RUBY_PLATFORM) != nil
+    end
+
+    def OS.unix?
+        !OS.windows?
+    end
+
+    def OS.linux?
+        OS.unix? and not OS.mac?
+    end
+end
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/xenial64"
+    config.vm.box_check_update = false
+
+    if OS.windows?
+      puts "=======Vagrant launched from windows======="
+      config.vm.hostname = "win"
+    elsif OS.mac?
+      puts "=======Vagrant launched from mac======="
+      config.vm.hostname = "mac"      
+    elsif OS.linux?
+      puts "=======Vagrant launched from linux======="
+      config.vm.hostname = "linux"
+    else
+      puts "=======Vagrant launched from unknown platform======="
+      config.vm.hostname = "unknow"
+    end
+
+    config.vbguest.auto_update = false
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.memory = "4096"
+        vb.cpus = 2
+    end
+end
+```
